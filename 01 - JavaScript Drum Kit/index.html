@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Drum Kit - #JavaScript30</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+
+	<!-- Buttons -->
+	<div class="keys">
+		<button data-key="65" class="key">
+			<kbd>A</kbd>
+			<span class="sound">clap</span>
+		</button>
+		<button data-key="83" class="key">
+			<kbd>S</kbd>
+			<span class="sound">hihat</span>
+		</button>
+		<button data-key="68" class="key">
+			<kbd>D</kbd>
+			<span class="sound">kick</span>
+		</button>
+		<button data-key="70" class="key">
+			<kbd>F</kbd>
+			<span class="sound">openhat</span>
+		</button>
+		<button data-key="71" class="key">
+			<kbd>G</kbd>
+			<span class="sound">boom</span>
+		</button>
+		<button data-key="72" class="key">
+			<kbd>H</kbd>
+			<span class="sound">ride</span>
+		</button>
+		<button data-key="74" class="key">
+			<kbd>J</kbd>
+			<span class="sound">snare</span>
+		</button>
+		<button data-key="75" class="key">
+			<kbd>K</kbd>
+			<span class="sound">tom</span>
+		</button>
+		<button data-key="76" class="key">
+			<kbd>L</kbd>
+			<span class="sound">tink</span>
+		</button>
+	</div>
+
+	<!-- Sounds of the drum -->
+	<audio data-key="65" src="sounds/clap.wav"></audio>
+	<audio data-key="83" src="sounds/hihat.wav"></audio>
+	<audio data-key="68" src="sounds/kick.wav"></audio>
+	<audio data-key="70" src="sounds/openhat.wav"></audio>
+	<audio data-key="71" src="sounds/boom.wav"></audio>
+	<audio data-key="72" src="sounds/ride.wav"></audio>
+	<audio data-key="74" src="sounds/snare.wav"></audio>
+	<audio data-key="75" src="sounds/tom.wav"></audio>
+	<audio data-key="76" src="sounds/tink.wav"></audio>
+
+<script>
+
+	function removeTransition (e){
+		if (e.propertyName !== 'transform') return; //checks if the property been transitioned is transform
+		this.classList.remove('playing'); //remove the class playing after the transition
+
+	}
+
+	function playSound (e) {
+		const audio = document.querySelector(`audio[data-key="${e.keyCode ? `${e.keyCode}` : `${this.dataset.key}`}"]`);  // get the audio tag by click or keydown using dataset
+		const key = document.querySelector(`.key[data-key="${e.keyCode ? `${e.keyCode}` : `${this.dataset.key}`}"]`); // get the .key by click or keydown using dataset
+		if (!audio) return; // if audio exist continue the function
+
+		audio.currentTime = 0; // set the time of the sound to 0 for pressing mutiple times the key
+		audio.play(); //play the sound
+
+		key.classList.add('playing');  //add the class playing for a cool effect
+	}
+
+	const keys = document.querySelectorAll('.key'); //array of the .key
+
+	keys.forEach( keys => keys.addEventListener('transitionend', removeTransition));  //get all .key and play the removeTransition function after the end of transition
+
+	keys.forEach( keys => keys.addEventListener('click', playSound));  //get all the .key and add the function playSounf when click in the element
+
+	window.addEventListener('keydown', playSound); //get all the .key and add the function playSound. The function is triggered if the keyCode exist in the data-key of the element
+
+</script>
+
+</body>
+</html>
